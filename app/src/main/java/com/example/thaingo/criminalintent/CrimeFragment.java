@@ -14,6 +14,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.util.UUID;
+
+import static com.example.thaingo.criminalintent.CrimeActivity.EXTRA_CRIME_ID;
+
 public class CrimeFragment extends Fragment {
     private Crime mCrime;
     private EditText mTitleField;
@@ -23,7 +27,9 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCrime = new Crime();
+        UUID crimeId = (UUID) getActivity().getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+        // get Crime from the storage
+        mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
 
     @Nullable
