@@ -1,5 +1,6 @@
 package com.example.thaingo.criminalintent;
 
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -59,7 +60,8 @@ public class CrimeListFragment extends Fragment {
         public void bind(Crime crime) {
             mCrime = crime;
             mTitleTextView.setText(mCrime.getTitle());
-            mDateTextView.setText(mCrime.getDate().toString());
+            SimpleDateFormat formatter = new SimpleDateFormat("EEE, MMM dd, yyyy");
+            mDateTextView.setText(formatter.format(mCrime.getDate()));
             mSolvedImageView.setVisibility(mCrime.isSolved() ? View.VISIBLE : View.GONE);
         }
 
