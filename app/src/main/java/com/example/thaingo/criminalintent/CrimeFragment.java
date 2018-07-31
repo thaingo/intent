@@ -20,6 +20,7 @@ import java.util.UUID;
 public class CrimeFragment extends Fragment {
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "dialog_date";
+    private static final int REQUEST_CODE = 0;
 
     private Crime mCrime;
     private EditText mTitleField;
@@ -66,6 +67,7 @@ public class CrimeFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_CODE);
                 dialog.show(fm, DIALOG_DATE);
             }
         });
