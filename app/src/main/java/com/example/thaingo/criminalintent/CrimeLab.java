@@ -1,6 +1,8 @@
 package com.example.thaingo.criminalintent;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import com.example.thaingo.criminalintent.database.CrimeBaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +10,14 @@ import java.util.UUID;
 
 public class CrimeLab {
     private static CrimeLab sCrimeLab;
+    private Context mContext;
+    private SQLiteDatabase mSQLiteDatabase;
 
     private List<Crime> mCrimes;
 
     private CrimeLab(Context context) {
+        mContext = context.getApplicationContext();
+        mSQLiteDatabase = new CrimeBaseHelper(mContext).getWritableDatabase();
         mCrimes = new ArrayList<>();
     }
 
