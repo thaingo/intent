@@ -2,6 +2,7 @@ package com.example.thaingo.criminalintent;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.example.thaingo.criminalintent.database.CrimeBaseHelper;
 import com.example.thaingo.criminalintent.database.CrimeDbSchema;
@@ -55,5 +56,9 @@ public class CrimeLab {
         contentValues.put(CrimeTable.Cols.SOLVED, crime.isSolved() ? 1 : 0);
 
         return contentValues;
+    }
+
+    private Cursor queryCrimes(String whereClause, String[] whereArgs) {
+        return mSQLiteDatabase.query(CrimeTable.NAME, null, whereClause, whereArgs, null, null, null);
     }
 }
