@@ -37,6 +37,8 @@ public class CrimeLab {
     }
 
     public void addCrime(Crime crime) {
+        ContentValues values = getContentValues(crime);
+        mSQLiteDatabase.insert(CrimeTable.NAME, null, values);
     }
 
     private static ContentValues getContentValues(Crime crime) {
