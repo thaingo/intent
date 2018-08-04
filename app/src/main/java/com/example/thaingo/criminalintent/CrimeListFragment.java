@@ -21,9 +21,11 @@ import android.widget.TextView;
 import java.util.List;
 
 public class CrimeListFragment extends Fragment {
+    private static final String SAVED_SUBTITLE_VISIBILITY = "subtitle";
+
     private RecyclerView mRecyclerView;
     private CrimeAdapter mAdapter;
-    private boolean mSubtileVisible;
+    private boolean mSubtitleVisible;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,9 +41,19 @@ public class CrimeListFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        if (savedInstanceState != null) {
+            mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBILITY);
+        }
+
         updateUI();
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SAVED_SUBTITLE_VISIBILITY, mSubtitleVisible);
     }
 
     @Override
@@ -50,7 +62,7 @@ public class CrimeListFragment extends Fragment {
         inflater.inflate(R.menu.fragment_crime_list, menu);
 
         MenuItem subtitleItem = menu.findItem(R.id.show_subtitle);
-        if (mSubtileVisible) {
+        if (mSubtitleVisible) {
             subtitleItem.setTitle(R.string.hide_subtitle);
         } else {
             subtitleItem.setTitle(R.string.show_subtitle);
@@ -68,7 +80,7 @@ public class CrimeListFragment extends Fragment {
                 startActivity(intent);
                 return true;
             case R.id.show_subtitle:
-                mSubtileVisible = !mSubtileVisible;
+                mSubtitleVisible = !mSubtitleVisible;
                 getActivity().invalidateOptionsMenu();
                 updateSubtitle();
                 return true;
@@ -101,7 +113,7 @@ public class CrimeListFragment extends Fragment {
         int noCrimes = crimeLab.getCrimes().size();
         String subtitle = getString(R.string.subtitle_format, noCrimes);
 
-        if (!mSubtileVisible) {
+        if (!mSubtitleVisible) {
             subtitle = null;
         }
 
