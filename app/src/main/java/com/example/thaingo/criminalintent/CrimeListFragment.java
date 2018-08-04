@@ -99,6 +99,10 @@ public class CrimeListFragment extends Fragment {
         int noCrimes = crimeLab.getCrimes().size();
         String subtitle = getString(R.string.subtitle_format, noCrimes);
 
+        if (!mSubtileVisible) {
+            subtitle = null;
+        }
+
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.getSupportActionBar().setSubtitle(subtitle);
     }
