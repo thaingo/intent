@@ -1,8 +1,11 @@
 package com.example.thaingo.criminalintent;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import com.example.thaingo.criminalintent.database.CrimeBaseHelper;
+import com.example.thaingo.criminalintent.database.CrimeDbSchema;
+import com.example.thaingo.criminalintent.database.CrimeDbSchema.CrimeTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +16,9 @@ public class CrimeLab {
     private Context mContext;
     private SQLiteDatabase mSQLiteDatabase;
 
-    private List<Crime> mCrimes;
-
     private CrimeLab(Context context) {
         mContext = context.getApplicationContext();
         mSQLiteDatabase = new CrimeBaseHelper(mContext).getWritableDatabase();
-        mCrimes = new ArrayList<>();
     }
 
     public static CrimeLab get(Context context) {
@@ -30,20 +30,22 @@ public class CrimeLab {
     }
 
     public List<Crime> getCrimes() {
-        return mCrimes;
     }
 
     public Crime getCrime(UUID id) {
-        for (Crime crime : mCrimes) {
-            if (crime.getId().equals(id)) {
-                return crime;
-            }
-        }
-
         return null;
     }
 
     public void addCrime(Crime crime) {
-        mCrimes.add(crime);
+    }
+
+    private static ContentValues getContentValues(Crime crime) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CrimeTable.Cols.UUID, crime.getId().toString());
+        contentValues.put(CrimeTable.Cols.TITLE, crime.getTitle());
+        contentValues.put(CrimeTable.Cols.DATE, crime.getDate().getTime());
+        contentValues.put(CrimeTable.Cols.SOLVED, crime.isSolved() ? 1 : 0);
+
+        return contentValues;
     }
 }
