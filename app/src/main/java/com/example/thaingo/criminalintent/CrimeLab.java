@@ -41,6 +41,12 @@ public class CrimeLab {
         mSQLiteDatabase.insert(CrimeTable.NAME, null, values);
     }
 
+    public void updateCrime(Crime crime) {
+        ContentValues values = getContentValues(crime);
+        mSQLiteDatabase.update(CrimeTable.NAME, values, CrimeTable.Cols.UUID + " = ?",
+                               new String[]{crime.getId().toString()});
+    }
+
     private static ContentValues getContentValues(Crime crime) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(CrimeTable.Cols.UUID, crime.getId().toString());
