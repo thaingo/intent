@@ -3,6 +3,7 @@ package com.example.thaingo.criminalintent;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,11 +26,13 @@ public class CrimeFragment extends Fragment {
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "dialog_date";
     private static final int REQUEST_CODE = 0;
+    private static final int REQUEST_CONTACT = 1;
 
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mResolvedCheckBox;
+    private Button mSupectButton;
     private Button mReportButton;
 
     @Override
@@ -106,6 +109,19 @@ public class CrimeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        mSupectButton = (Button) view.findViewById(R.id.crime_suspect);
+        final Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        mSupectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(intent, REQUEST_CONTACT);
+            }
+        });
+
+        if (mCrime.getSuspect() != null) {
+            mSupectButton.setText(mCrime.getSuspect());
+        }
 
         return view;
     }
