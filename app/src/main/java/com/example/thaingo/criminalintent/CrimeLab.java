@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.example.thaingo.criminalintent.database.CrimeBaseHelper;
-import com.example.thaingo.criminalintent.database.CrimeDbSchema;
+import com.example.thaingo.criminalintent.database.CrimeCursorWrapper;
 import com.example.thaingo.criminalintent.database.CrimeDbSchema.CrimeTable;
 
 import java.util.ArrayList;
@@ -31,6 +31,20 @@ public class CrimeLab {
     }
 
     public List<Crime> getCrimes() {
+        List<Crime> crimes = new ArrayList<>();
+        CrimeCursorWrapper cursor = queryCrimes(null, null);
+
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                crimes.add(cursor.getCrime());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return crimes;
     }
 
     public Crime getCrime(UUID id) {
@@ -58,7 +72,8 @@ public class CrimeLab {
         return contentValues;
     }
 
-    private Cursor queryCrimes(String whereClause, String[] whereArgs) {
-        return mSQLiteDatabase.query(CrimeTable.NAME, null, whereClause, whereArgs, null, null, null);
+    private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
+        Cursor cursor = mSQLiteDatabase.query(CrimeTable.NAME, null, whereClause, whereArgs, null, null, null);
+        return new CrimeCursorWrapper(cursor);
     }
 }
