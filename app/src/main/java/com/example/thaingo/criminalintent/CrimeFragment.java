@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.util.Date;
 import java.util.UUID;
@@ -37,6 +39,8 @@ public class CrimeFragment extends Fragment {
     private CheckBox mResolvedCheckBox;
     private Button mSuspectButton;
     private Button mReportButton;
+    private ImageButton mPhotoButton;
+    private ImageView mPhotoView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -131,6 +135,8 @@ public class CrimeFragment extends Fragment {
             mSuspectButton.setEnabled(false);
         }
 
+        mPhotoButton = (ImageButton) view.findViewById(R.id.crime_camera);
+        mPhotoView = (ImageView) view.findViewById(R.id.crime_photo);
         return view;
     }
 
