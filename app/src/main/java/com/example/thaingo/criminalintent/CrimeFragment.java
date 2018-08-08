@@ -35,7 +35,7 @@ public class CrimeFragment extends Fragment {
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mResolvedCheckBox;
-    private Button mSupectButton;
+    private Button mSuspectButton;
     private Button mReportButton;
 
     @Override
@@ -113,9 +113,9 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-        mSupectButton = (Button) view.findViewById(R.id.crime_suspect);
+        mSuspectButton = (Button) view.findViewById(R.id.crime_suspect);
         final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-        mSupectButton.setOnClickListener(new View.OnClickListener() {
+        mSuspectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivityForResult(pickContact, REQUEST_CONTACT);
@@ -123,12 +123,12 @@ public class CrimeFragment extends Fragment {
         });
 
         if (mCrime.getSuspect() != null) {
-            mSupectButton.setText(mCrime.getSuspect());
+            mSuspectButton.setText(mCrime.getSuspect());
         }
 
         PackageManager packageManager = getActivity().getPackageManager();
         if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {
-            mSupectButton.setEnabled(false);
+            mSuspectButton.setEnabled(false);
         }
 
         return view;
@@ -167,7 +167,7 @@ public class CrimeFragment extends Fragment {
                 cursor.moveToFirst();
                 String suspect = cursor.getString(0);
                 mCrime.setSuspect(suspect);
-                mSupectButton.setText(suspect);
+                mSuspectButton.setText(suspect);
             } finally {
                 cursor.close();
             }
