@@ -8,6 +8,7 @@ import com.example.thaingo.criminalintent.database.CrimeBaseHelper;
 import com.example.thaingo.criminalintent.database.CrimeCursorWrapper;
 import com.example.thaingo.criminalintent.database.CrimeDbSchema.CrimeTable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -71,6 +72,11 @@ public class CrimeLab {
         ContentValues values = getContentValues(crime);
         mSQLiteDatabase.update(CrimeTable.NAME, values, CrimeTable.Cols.UUID + " = ?",
                                new String[]{crime.getId().toString()});
+    }
+
+    public File getPhotoFile(Crime crime) {
+        File filesDir = mContext.getFilesDir();
+        return new File(filesDir, crime.getPhotoFileName());
     }
 
     private static ContentValues getContentValues(Crime crime) {
