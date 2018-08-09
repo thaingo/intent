@@ -1,7 +1,9 @@
 package com.example.thaingo.criminalintent;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 
 public class PictureUtils {
     public static Bitmap getScaleBitmap(String path, int destWidth, int destHeight) {
@@ -26,5 +28,11 @@ public class PictureUtils {
 
         // read in and create final bitmap
         return BitmapFactory.decodeFile(path, options);
+    }
+
+    public static Bitmap getScaleBitmap(String path, Activity activity) {
+        Point size = new Point();
+        activity.getWindowManager().getDefaultDisplay().getSize(size);
+        return getScaleBitmap(path, size.x, size.y);
     }
 }
