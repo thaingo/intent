@@ -39,6 +39,7 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_CODE = 0;
     private static final int REQUEST_CONTACT = 1;
     private static final int REQUEST_PHOTO = 2;
+    public static final String AUTHORITIES = "com.example.thaingo.criminalintent.fileprovider";
 
     private Crime mCrime;
     private EditText mTitleField;
@@ -152,7 +153,7 @@ public class CrimeFragment extends Fragment {
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = FileProvider.getUriForFile(getActivity(), "com.example.thaingo.criminalintent.fileprovider",
+                Uri uri = FileProvider.getUriForFile(getActivity(), AUTHORITIES,
                                                      mPhotoFile);
                 capturePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
@@ -214,7 +215,7 @@ public class CrimeFragment extends Fragment {
                 cursor.close();
             }
         } else if (requestCode == REQUEST_PHOTO) {
-            Uri uri = FileProvider.getUriForFile(getActivity(), "com.exaple.thaingo.criminalintent.fileprovider",
+            Uri uri = FileProvider.getUriForFile(getActivity(), AUTHORITIES,
                                                  mPhotoFile);
             getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
