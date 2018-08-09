@@ -3,14 +3,17 @@ package com.example.thaingo.criminalintent;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -26,6 +29,7 @@ import android.widget.ImageView;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class CrimeFragment extends Fragment {
@@ -33,6 +37,7 @@ public class CrimeFragment extends Fragment {
     private static final String DIALOG_DATE = "dialog_date";
     private static final int REQUEST_CODE = 0;
     private static final int REQUEST_CONTACT = 1;
+    private static final int REQUEST_PHOTO = 2;
 
     private Crime mCrime;
     private EditText mTitleField;
@@ -139,7 +144,33 @@ public class CrimeFragment extends Fragment {
         }
 
         mPhotoButton = (ImageButton) view.findViewById(R.id.crime_camera);
+
+        final Intent capturePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        boolean canTakePhoto = mPhotoFile != null && capturePhotoIntent.resolveActivity(packageManager) != null;
+        mPhotoButton.setEnabled(canTakePhoto);
+        mPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = FileProvider.getUriForFile(getActivity(), "com.example.thaingo.criminalintent.fileprovider",
+                                                     mPhotoFile);
+                capturePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+
+                List<ResolveInfo> cameraActivities = getActivity().getPackageManager()
+                                                                  .queryIntentActivities(capturePhotoIntent,
+                                                                                         PackageManager
+                                                                                                 .MATCH_DEFAULT_ONLY);
+                for (ResolveInfo activity : cameraActivities) {
+                    getActivity().grantUriPermission(activity.activityInfo.packageName, uri,
+                                                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                }
+
+                startActivityForResult(capturePhotoIntent, REQUEST_PHOTO);
+            }
+        });
+
         mPhotoView = (ImageView) view.findViewById(R.id.crime_photo);
+
+
         return view;
     }
 
