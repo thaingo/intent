@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.util.Date;
 import java.util.UUID;
 
@@ -41,6 +42,7 @@ public class CrimeFragment extends Fragment {
     private Button mReportButton;
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
+    private File mPhotoFile;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class CrimeFragment extends Fragment {
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         // get Crime from the storage
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+        mPhotoFile = CrimeLab.get(getActivity()).getPhotoFile(mCrime);
     }
 
     @Override
