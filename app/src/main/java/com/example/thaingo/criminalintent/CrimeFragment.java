@@ -171,6 +171,7 @@ public class CrimeFragment extends Fragment {
 
         mPhotoView = (ImageView) view.findViewById(R.id.crime_photo);
 
+        updatePhotoView();
 
         return view;
     }
@@ -212,6 +213,12 @@ public class CrimeFragment extends Fragment {
             } finally {
                 cursor.close();
             }
+        } else if (requestCode == REQUEST_PHOTO) {
+            Uri uri = FileProvider.getUriForFile(getActivity(), "com.exaple.thaingo.criminalintent.fileprovider",
+                                                 mPhotoFile);
+            getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+            updatePhotoView();
         }
     }
 
